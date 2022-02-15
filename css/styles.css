@@ -1,9 +1,40 @@
 body {
-  background:
+  background-image:
     linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
     url("../images/background.jpeg");
   background-repeat: no-repeat;
-  background-position: center;
   background-attachment: fixed;
+  background-position: center;
   background-size: cover;
+  font-family: Roboto, sans-serif;
+  color: #fff;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  background: linear-gradient(#02071f 60%, rgba(37, 20, 54, 0) 100%);
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+.nav-container {
+  margin: 1% 10%;
+  white-space: nowrap;
+}
+
+.app-home-page {
+  font-family: Acme, sans-serif;
+  font-size: 2.5rem;
+}
+
+.watchlist-icon {
+  font-size: 1.5rem;
+}
+
+.watchlist-text {
+  font-size: 1.2rem;
 }
