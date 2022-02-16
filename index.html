@@ -21,10 +21,8 @@
   </head>
   <body>
     <header>
-      <nav
-        class="nav-container display-flex justify-space-between align-items-center"
-      >
-        <a class="app-home-page">Movie +</a>
+      <nav class="nav-container">
+        <a class="app-name">Movie +</a>
         <a class="watchlist">
           <i class="fa-solid fa-film watchlist-icon"></i>
           <span class="watchlist-text">My Watchlist</span>
@@ -32,7 +30,23 @@
       </nav>
     </header>
 
-    <main></main>
+    <main>
+      <div class="container" data-view="home">
+        <form class="form-home">
+          <div class="search-container">
+            <input
+              required
+              class="search-input"
+              type="text"
+              placeholder="Search by Movie Title"
+            />
+            <button class="search-button" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
 
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>

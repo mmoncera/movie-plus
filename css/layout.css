@@ -1,12 +1,28 @@
-.display-flex {
+.hidden {
+  display: none !important;
+}
+
+.container {
+  max-width: 575px;
+  margin: 0 auto;
+}
+
+.row {
   display: flex;
   flex-wrap: wrap;
 }
 
-.justify-space-between {
-  justify-content: space-between;
+.column-full,
+.column-half {
+  width: 100%;
 }
 
-.align-items-center {
-  align-items: center;
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 900px;
+  }
+
+  .column-half {
+    width: 50%;
+  }
 }

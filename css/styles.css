@@ -7,13 +7,14 @@ body {
   background-position: center;
   background-size: cover;
   font-family: Roboto, sans-serif;
-  color: #fff;
+  color: white;
 }
 
 header {
-  position: fixed;
-  width: 100%;
   background: linear-gradient(#02071f 60%, rgba(37, 20, 54, 0) 100%);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 a,
@@ -22,11 +23,15 @@ button {
 }
 
 .nav-container {
-  margin: 1% 10%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-inline: 10%;
   white-space: nowrap;
 }
 
-.app-home-page {
+.app-name {
   font-family: Acme, sans-serif;
   font-size: 2.5rem;
 }
@@ -37,4 +42,51 @@ button {
 
 .watchlist-text {
   font-size: 1.2rem;
+}
+
+main {
+  position: relative;
+  top: 3.2rem;
+}
+
+.form-home {
+  margin-block: 40%;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-inline: 0.75rem;
+}
+
+.search-container:focus-within {
+  outline: 0.3rem solid darkgray;
+  border-radius: 1rem;
+}
+
+.search-input,
+.search-button {
+  background-color: white;
+  height: 3rem;
+  border: none;
+  outline: none;
+  font-size: 1.25rem;
+}
+
+.search-input {
+  width: 100%;
+  padding-left: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+::placeholder {
+  color: black;
+}
+
+.search-button {
+  padding-right: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }
