@@ -1,0 +1,90 @@
+body {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../images/background.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  font-family: Roboto, sans-serif;
+  color: white;
+}
+
+header {
+  background: linear-gradient(#02071f 60%, rgba(37, 20, 54, 0) 100%);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+.nav-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-inline: 10%;
+  white-space: nowrap;
+}
+
+.app-name {
+  font-family: Acme, sans-serif;
+  font-size: 2.5rem;
+}
+
+.watchlist-icon {
+  font-size: 1.5rem;
+}
+
+.watchlist-text {
+  font-size: 1.2rem;
+}
+
+main {
+  position: relative;
+  top: 3.2rem;
+}
+
+.form {
+  margin-block: 40% auto;
+}
+
+.search-container {
+  display: flex;
+  margin-inline: 0.75rem;
+  border-radius: 1rem;
+}
+
+.search-container:focus-within {
+  outline: 0.3rem solid darkgray;
+}
+
+.search-input,
+.search-button {
+  background-color: white;
+  height: 3rem;
+  font-size: 1.25rem;
+  border: none;
+  outline: none;
+}
+
+.search-input {
+  width: 100%;
+  padding-left: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+::placeholder {
+  color: black;
+}
+
+.search-button {
+  padding-right: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
