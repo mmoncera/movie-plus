@@ -48,7 +48,23 @@
         </form>
       </div>
 
-      <div class="container hidden" data-view="search-results"></div>
+      <div class="container hidden" data-view="search-results">
+        <form class="form-search-results">
+          <div class="search-container">
+            <input
+              required
+              class="search-input"
+              name="search"
+              type="text"
+              placeholder="Search by Movie Title"
+            />
+            <button class="search-button" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+        <p class="search-message"></p>
+      </div>
     </main>
 
     <script src="js/data.js"></script>
