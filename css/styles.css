@@ -7,9 +7,10 @@ body {
   background-position: center;
   background-size: cover;
   font-family: Roboto, sans-serif;
-  color: white;
+  color: #fff;
 }
 
+/* Header */
 header {
   background: linear-gradient(#02071f 60%, rgba(37, 20, 54, 0) 100%);
   position: fixed;
@@ -31,7 +32,7 @@ button {
   white-space: nowrap;
 }
 
-.app-name {
+.app-home {
   font-family: Acme, sans-serif;
   font-size: 2.5rem;
 }
@@ -44,13 +45,15 @@ button {
   font-size: 1.2rem;
 }
 
+/* Main */
 main {
   position: relative;
-  top: 3.2rem;
+  top: 5rem;
 }
 
+/* HOME VIEW */
 .form-home {
-  margin-block: 40% auto;
+  margin: 35vh auto;
 }
 
 .search-container {
@@ -60,14 +63,14 @@ main {
 }
 
 .search-container:focus-within {
-  outline: 0.3rem solid darkgray;
+  outline: 0.3rem solid #a9a9a9;
 }
 
 .search-input,
 .search-button {
-  background-color: white;
+  background-color: #fff;
   height: 3rem;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   border: none;
   outline: none;
 }
@@ -80,7 +83,8 @@ main {
 }
 
 ::placeholder {
-  color: black;
+  font-size: 1rem;
+  color: #635e5e;
 }
 
 .search-button {

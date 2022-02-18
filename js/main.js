@@ -1,6 +1,51 @@
+/*
+************************************************
+DOM Nodes
+************************************************
+*/
+var $appHome = document.querySelector('.app-home');
+var $dataView = document.querySelectorAll('[data-view]');
 var $formHome = document.querySelector('.form-home');
 
-$formHome.addEventListener('submit', handleSearch);
+/*
+************************************************
+Utility Functions
+************************************************
+*/
+
+function switchDataView(view) {
+  $dataView.forEach(element => {
+    if (element.dataset.view !== view) {
+      element.classList.add('hidden');
+    } else {
+      element.classList.remove('hidden');
+      data.view = view;
+    }
+  });
+}
+
+function searchMovie(response) {
+  response.forEach(({ imdbID, Poster, Title, Year }) => {
+    if (Poster !== 'N/A') {
+      var movie = {
+        imdbID,
+        Poster,
+        Title,
+        Year
+      };
+      data.searchResults.push(movie);
+    }
+  });
+}
+
+/*
+************************************************
+Event Listener Handlers
+************************************************
+*/
+function handleHomeView(event) {
+  switchDataView('home');
+}
 
 function handleSearch(event) {
   event.preventDefault();
@@ -17,18 +62,13 @@ function handleSearch(event) {
     searchMovie(searchQuery.response.Search);
   });
   searchQuery.send();
+  switchDataView('search-results');
 }
 
-function searchMovie(response) {
-  response.forEach(({ imdbID, Poster, Title, Year }) => {
-    if (Poster !== 'N/A') {
-      var movie = {
-        imdbID,
-        Poster,
-        Title,
-        Year
-      };
-      data.searchResults.push(movie);
-    }
-  });
-}
+/*
+************************************************
+Event Listners
+************************************************
+*/
+$appHome.addEventListener('click', handleHomeView);
+$formHome.addEventListener('submit', handleSearch);
