@@ -11,10 +11,44 @@ var $searchMessage = document.querySelector('.search-message');
 
 /*
 ************************************************
+Event Listners
+************************************************
+*/
+$appHome.addEventListener('click', handleHomeView);
+$formHome.addEventListener('submit', handleSubmitHome);
+$formSearchResults.addEventListener('submit', handleSubmitSearchResults);
+
+/*
+************************************************
+Event Handlers
+************************************************
+*/
+function handleHomeView(event) {
+  switchDataView('home');
+}
+
+function handleSubmitHome(event) {
+  event.preventDefault();
+  data.searchResults = [];
+  data.searchInput = $formHome.search.value;
+  searchMovie();
+  $formHome.reset();
+  switchDataView('search-results');
+}
+
+function handleSubmitSearchResults(event) {
+  event.preventDefault();
+  data.searchResults = [];
+  data.searchInput = $formSearchResults.search.value;
+  searchMovie();
+  $formSearchResults.reset();
+}
+
+/*
+************************************************
 Utility Functions
 ************************************************
 */
-
 function switchDataView(view) {
   $dataView.forEach(element => {
     if (element.dataset.view !== view) {
@@ -26,48 +60,21 @@ function switchDataView(view) {
   });
 }
 
-// function searchMovie(response) {
-//   if (!response) {
-//     $searchResultsMessage.textContent = 'Movie not found!';
-//   } else {
-//     response.forEach(({ imdbID, Poster, Title, Year }) => {
-//       if (Poster !== 'N/A') {
-//         var movie = {
-//           imdbID,
-//           Poster,
-//           Title,
-//           Year
-//         };
-//         data.searchResults.push(movie);
-//       }
-//     });
-//   }
-// }
-
-/*
-************************************************
-Event Listener Handlers
-************************************************
-*/
-function handleHomeView(event) {
-  switchDataView('home');
-}
-
-function handleSearch(event) {
-  event.preventDefault();
-  data.searchResults = [];
-  data.searchInput = $formHome.elements.search.value;
-  var searchQuery = new XMLHttpRequest();
-  searchQuery.open(
+function searchMovie() {
+  var xhr = new XMLHttpRequest();
+  xhr.open(
     'GET',
     `http://www.omdbapi.com/?apikey=f1112d72&type=movie&s=${data.searchInput}`
   );
-  searchQuery.responseType = 'json';
+  xhr.responseType = 'json';
 
-  searchQuery.addEventListener('load', function (event) {
-    // console.log(searchQuery.response);
-    searchQuery.response.Search.forEach(({ imdbID, Poster, Title, Year }) => {
-      $formSearchResults.elements.search.value = data.searchInput;
+  xhr.addEventListener('load', function (event) {
+    if (xhr.status >= 400 || xhr.response.Response === 'False') {
+      $searchMessage.textContent = `No results found for "${data.searchInput}"`;
+      return;
+    }
+
+    xhr.response.Search.forEach(({ imdbID, Poster, Title, Year }) => {
       $searchMessage.textContent = `Search results for "${data.searchInput}"`;
       if (Poster !== 'N/A') {
         var movie = {
@@ -80,15 +87,5 @@ function handleSearch(event) {
       }
     });
   });
-
-  searchQuery.send();
-  switchDataView('search-results');
+  xhr.send();
 }
-
-/*
-************************************************
-Event Listners
-************************************************
-*/
-$appHome.addEventListener('click', handleHomeView);
-$formHome.addEventListener('submit', handleSearch);
