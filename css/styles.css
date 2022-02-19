@@ -1,6 +1,6 @@
 body {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
     url("../images/background.jpeg");
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -16,6 +16,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 1;
 }
 
 a,
@@ -24,8 +25,6 @@ button {
 }
 
 .nav-container {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-inline: 10%;
@@ -34,21 +33,21 @@ button {
 
 .app-home {
   font-family: Acme, sans-serif;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
 }
 
 .watchlist-icon {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 
 .watchlist-text {
-  font-size: 1.2rem;
+  font-size: 1.45rem;
 }
 
 /* Main */
 main {
   position: relative;
-  top: 5rem;
+  top: 5.5rem;
 }
 
 /* Home View */
@@ -94,8 +93,38 @@ main {
 }
 
 /* Search Results View */
-
 .search-message {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   text-align: center;
+}
+
+li {
+  list-style: none;
+}
+
+.movie-cards-container {
+  padding: 0;
+}
+
+.movie-card {
+  margin-bottom: 1.75rem;
+}
+
+.movie-card-poster,
+.info-container {
+  display: block;
+  margin: 0 auto;
+}
+
+.movie-card-poster {
+  width: 60%;
+  height: 90%;
+}
+
+.info-container {
+  background-color: #2c2828;
+  max-width: 60%;
+  padding: 0.25rem 0.25rem 0.1rem;
+  font-size: 1.15rem;
+  white-space: nowrap;
 }

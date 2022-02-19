@@ -69,6 +69,7 @@ function searchMovie() {
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function (event) {
+    // console.log(xhr);
     if (xhr.status >= 400 || xhr.response.Response === 'False') {
       $searchMessage.textContent = `No results found for "${data.searchInput}"`;
       return;
@@ -87,5 +88,6 @@ function searchMovie() {
       }
     });
   });
+
   xhr.send();
 }
