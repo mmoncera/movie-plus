@@ -19,6 +19,7 @@ window.addEventListener('DOMContentLoaded', handleLoadDomContent);
 $appHome.addEventListener('click', handleHomeView);
 $formHome.addEventListener('submit', handleSubmit);
 $formSearchResults.addEventListener('submit', handleSubmit);
+$movieCardsContainer.addEventListener('click', handleMovieInfoView);
 
 /*
 ************************************************
@@ -44,6 +45,16 @@ function handleSubmit() {
   searchMovie();
   this.reset();
   switchDataView('search-results');
+}
+
+function handleMovieInfoView(event) {
+  if (
+    event.target &&
+    (event.target.matches('.movie-card-info-icon') ||
+      event.target.matches('.movie-card-info-text'))
+  ) {
+    switchDataView('movie-info');
+  }
 }
 
 /*
@@ -103,10 +114,8 @@ function renderMovieCard(movie) {
       />
     </div>
     <div class="movie-card-info-container row">
-      <a class="movie-card-info-anchor">
         <i class="fa-solid fa-circle-info movie-card-info-icon"></i>
         <span class="movie-card-info-text">Details</span>
-      </a>
     </div>
   </li>
   */
@@ -115,7 +124,6 @@ function renderMovieCard(movie) {
   var $movieCardPosterContainer = document.createElement('div');
   var $movieCardPoster = document.createElement('img');
   var $movieCardInfoContainer = document.createElement('div');
-  var $movieCardInfoAnchor = document.createElement('a');
   var $movieCardInfoIcon = document.createElement('i');
   var $movieCardInfoText = document.createElement('span');
 
@@ -128,8 +136,10 @@ function renderMovieCard(movie) {
   $movieCardPoster.setAttribute('class', 'movie-card-poster');
   $movieCardPoster.setAttribute('src', movie.Poster);
   $movieCardPoster.setAttribute('alt', movie.Title);
-  $movieCardInfoContainer.setAttribute('class', 'movie-card-info-container');
-  $movieCardInfoAnchor.setAttribute('class', 'movie-card-info-anchor row');
+  $movieCardInfoContainer.setAttribute(
+    'class',
+    'movie-card-info-container row'
+  );
   $movieCardInfoIcon.setAttribute(
     'class',
     'fa-solid fa-circle-info movie-card-info-icon'
@@ -139,8 +149,7 @@ function renderMovieCard(movie) {
 
   $movieCard.append($movieCardPosterContainer, $movieCardInfoContainer);
   $movieCardPosterContainer.appendChild($movieCardPoster);
-  $movieCardInfoContainer.appendChild($movieCardInfoAnchor);
-  $movieCardInfoAnchor.append($movieCardInfoIcon, $movieCardInfoText);
+  $movieCardInfoContainer.append($movieCardInfoIcon, $movieCardInfoText);
 
   return $movieCard;
 }
