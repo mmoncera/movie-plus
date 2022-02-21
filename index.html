@@ -21,8 +21,8 @@
   </head>
   <body>
     <header>
-      <nav class="nav-container">
-        <a class="app-name">Movie +</a>
+      <nav class="nav-container row">
+        <a class="app-home">Movie +</a>
         <a class="watchlist">
           <i class="fa-solid fa-film watchlist-icon"></i>
           <span class="watchlist-text">My Watchlist</span>
@@ -32,7 +32,7 @@
 
     <main>
       <div class="container" data-view="home">
-        <form class="form">
+        <form class="form-home">
           <div class="search-container">
             <input
               required
@@ -46,6 +46,25 @@
             </button>
           </div>
         </form>
+      </div>
+
+      <div class="container hidden" data-view="search-results">
+        <form class="form-search-results">
+          <div class="search-container">
+            <input
+              required
+              class="search-input"
+              name="search"
+              type="text"
+              placeholder="Search by Movie Title"
+            />
+            <button class="search-button" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </div>
+        </form>
+        <p class="search-message"></p>
+        <ul class="movie-cards-container row"></ul>
       </div>
     </main>
 

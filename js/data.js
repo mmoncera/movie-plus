@@ -1,6 +1,7 @@
 /* exported data */
 
 var data = {
+  view: 'home',
   searchInput: null,
   currentMovieID: null,
   searchResults: [],
