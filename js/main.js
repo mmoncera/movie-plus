@@ -8,6 +8,7 @@ var $dataView = document.querySelectorAll('[data-view]');
 var $formHome = document.querySelector('.form-home');
 var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
+var $movieCardsContainer = document.querySelector('.movie-cards-container');
 
 /*
 ************************************************
@@ -15,8 +16,10 @@ Event Listners
 ************************************************
 */
 $appHome.addEventListener('click', handleHomeView);
-$formHome.addEventListener('submit', handleSubmitHome);
-$formSearchResults.addEventListener('submit', handleSubmitSearchResults);
+// $formHome.addEventListener('submit', handleSubmitHome);
+// $formSearchResults.addEventListener('submit', handleSubmitSearchResults);
+$formHome.addEventListener('submit', handleSubmit);
+$formSearchResults.addEventListener('submit', handleSubmit);
 
 /*
 ************************************************
@@ -27,21 +30,14 @@ function handleHomeView(event) {
   switchDataView('home');
 }
 
-function handleSubmitHome(event) {
+function handleSubmit() {
   event.preventDefault();
+  data.searchInput = this.search.value;
   data.searchResults = [];
-  data.searchInput = $formHome.search.value;
+  $movieCardsContainer.innerHTML = '';
   searchMovie();
-  $formHome.reset();
+  this.reset();
   switchDataView('search-results');
-}
-
-function handleSubmitSearchResults(event) {
-  event.preventDefault();
-  data.searchResults = [];
-  data.searchInput = $formSearchResults.search.value;
-  searchMovie();
-  $formSearchResults.reset();
 }
 
 /*
@@ -85,9 +81,63 @@ function searchMovie() {
           Year
         };
         data.searchResults.push(movie);
+        $movieCardsContainer.append(renderMovieCard(movie));
       }
     });
   });
 
   xhr.send();
+}
+
+function renderMovieCard(movie) {
+  /*
+  <li class="movie-card column-half" data-movie-id=`{movie.imdbID}`>
+    <div class="movie-card-poster-container row">
+      <img
+        class="movie-card-poster"
+        src=`${movie.Poster}
+        alt=`{movie.Title}`
+      />
+    </div>
+    <div class="movie-card-info-container row">
+      <a class="movie-card-info-anchor">
+        <i class="fa-solid fa-circle-info movie-card-info-icon"></i>
+        <span class="movie-card-info-text">Details</span>
+      </a>
+    </div>
+  </li>
+  */
+
+  var $movieCard = document.createElement('li');
+  var $movieCardPosterContainer = document.createElement('div');
+  var $movieCardPoster = document.createElement('img');
+  var $movieCardInfoContainer = document.createElement('div');
+  var $movieCardInfoAnchor = document.createElement('a');
+  var $movieCardInfoIcon = document.createElement('i');
+  var $movieCardInfoText = document.createElement('span');
+
+  $movieCard.setAttribute('class', 'movie-card column-half');
+  $movieCard.setAttribute('data-movie.id', movie.imdbID);
+  $movieCardPosterContainer.setAttribute(
+    'class',
+    'movie-card-poster-container row'
+  );
+  $movieCardPoster.setAttribute('class', 'movie-card-poster');
+  $movieCardPoster.setAttribute('src', movie.Poster);
+  $movieCardPoster.setAttribute('alt', movie.Title);
+  $movieCardInfoContainer.setAttribute('class', 'movie-card-info-container');
+  $movieCardInfoAnchor.setAttribute('class', 'movie-card-info-anchor row');
+  $movieCardInfoIcon.setAttribute(
+    'class',
+    'fa-solid fa-circle-info movie-card-info-icon'
+  );
+  $movieCardInfoText.setAttribute('class', 'movie-card-info-text');
+  $movieCardInfoText.textContent = 'Details';
+
+  $movieCard.append($movieCardPosterContainer, $movieCardInfoContainer);
+  $movieCardPosterContainer.appendChild($movieCardPoster);
+  $movieCardInfoContainer.appendChild($movieCardInfoAnchor);
+  $movieCardInfoAnchor.append($movieCardInfoIcon, $movieCardInfoText);
+
+  return $movieCard;
 }

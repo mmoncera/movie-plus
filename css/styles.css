@@ -110,21 +110,25 @@ li {
   margin-bottom: 1.75rem;
 }
 
-.movie-card-poster,
-.info-container {
-  display: block;
-  margin: 0 auto;
+.movie-card-poster-container {
+  justify-content: center;
 }
 
 .movie-card-poster {
   width: 60%;
-  height: 90%;
+  height: 24rem;
+  object-fit: cover;
 }
 
-.info-container {
+.movie-card-info-anchor {
   background-color: #2c2828;
-  max-width: 60%;
+  width: 60%;
+  margin: 0 auto;
   padding: 0.25rem 0.25rem 0.1rem;
   font-size: 1.15rem;
   white-space: nowrap;
+}
+
+.movie-card-info-text {
+  margin-left: 0.25rem;
 }
