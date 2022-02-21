@@ -107,6 +107,7 @@ li {
 }
 
 .movie-card {
+  list-style: none;
   margin-bottom: 1.75rem;
 }
 

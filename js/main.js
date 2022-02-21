@@ -71,12 +71,10 @@ function searchMovie() {
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function (event) {
-    // console.log(xhr);
     if (xhr.status >= 400 || xhr.response.Response === 'False') {
       $searchMessage.textContent = `No results found for "${data.searchInput}"`;
       return;
     }
-
     xhr.response.Search.forEach(({ imdbID, Poster, Title, Year }) => {
       $searchMessage.textContent = `Search results for "${data.searchInput}"`;
       if (Poster !== 'N/A') {
@@ -91,7 +89,6 @@ function searchMovie() {
       }
     });
   });
-
   xhr.send();
 }
 
