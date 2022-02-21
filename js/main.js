@@ -15,9 +15,8 @@ var $movieCardsContainer = document.querySelector('.movie-cards-container');
 Event Listners
 ************************************************
 */
+window.addEventListener('DOMContentLoaded', handleLoadDomContent);
 $appHome.addEventListener('click', handleHomeView);
-// $formHome.addEventListener('submit', handleSubmitHome);
-// $formSearchResults.addEventListener('submit', handleSubmitSearchResults);
 $formHome.addEventListener('submit', handleSubmit);
 $formSearchResults.addEventListener('submit', handleSubmit);
 
@@ -26,6 +25,13 @@ $formSearchResults.addEventListener('submit', handleSubmit);
 Event Handlers
 ************************************************
 */
+function handleLoadDomContent(event) {
+  switchDataView(data.view);
+  if (data.view === 'search-results') {
+    searchMovie();
+  }
+}
+
 function handleHomeView(event) {
   switchDataView('home');
 }
