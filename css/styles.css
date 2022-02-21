@@ -98,10 +98,6 @@ main {
   text-align: center;
 }
 
-li {
-  list-style: none;
-}
-
 .movie-cards-container {
   padding: 0;
 }
