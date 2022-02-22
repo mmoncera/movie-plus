@@ -40,7 +40,6 @@ function handleHomeView(event) {
 function handleSubmit() {
   event.preventDefault();
   data.searchInput = this.search.value;
-  data.searchResults = [];
   $movieCardsContainer.innerHTML = '';
   searchMovie();
   this.reset();
@@ -54,6 +53,9 @@ function handleMovieInfoView(event) {
       event.target.matches('.movie-card-info-text'))
   ) {
     switchDataView('movie-info');
+    var closestMovieId =
+      event.target.closest('[data-movie-id]').dataset.movieId;
+    data.selectedMovieId = closestMovieId;
   }
 }
 
@@ -81,6 +83,7 @@ function searchMovie() {
   );
   xhr.responseType = 'json';
 
+  data.searchResults = [];
   xhr.addEventListener('load', function (event) {
     if (xhr.status >= 400 || xhr.response.Response === 'False') {
       $searchMessage.textContent = `No results found for "${data.searchInput}"`;
@@ -128,7 +131,7 @@ function renderMovieCard(movie) {
   var $movieCardInfoText = document.createElement('span');
 
   $movieCard.setAttribute('class', 'movie-card column-half');
-  $movieCard.setAttribute('data-movie.id', movie.imdbID);
+  $movieCard.setAttribute('data-movie-id', movie.imdbID);
   $movieCardPosterContainer.setAttribute(
     'class',
     'movie-card-poster-container row'

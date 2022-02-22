@@ -3,7 +3,7 @@
 var data = {
   view: 'home',
   searchInput: null,
-  currentMovieID: null,
+  selectedMovieId: null,
   searchResults: [],
   watchlist: []
 };
@@ -20,3 +20,5 @@ function handleBeforeUnload(event) {
 }
 
 window.addEventListener('beforeunload', handleBeforeUnload);
+
+// localStorage.clear();
