@@ -66,7 +66,7 @@ function searchMovie() {
   var xhr = new XMLHttpRequest();
   xhr.open(
     'GET',
-    `http://www.omdbapi.com/?apikey=f1112d72&type=movie&s=${data.searchInput}`
+    `https://www.omdbapi.com/?apikey=f1112d72&type=movie&s=${data.searchInput}`
   );
   xhr.responseType = 'json';
 
