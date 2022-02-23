@@ -56,6 +56,7 @@ function handleMovieInfoView(event) {
     var closestMovieId =
       event.target.closest('[data-movie-id]').dataset.movieId;
     data.selectedMovieId = closestMovieId;
+    searchMovieImdbId();
   }
 }
 
@@ -103,6 +104,21 @@ function searchMovie() {
       }
     });
   });
+  xhr.send();
+}
+
+function searchMovieImdbId() {
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    'GET',
+    `https://www.omdbapi.com/?apikey=f1112d72&i=${data.selectedMovieId}`
+  );
+  xhr.responseType = 'json';
+
+  xhr.addEventListener('load', function (event) {
+    // console.log(xhr.response);
+  });
+
   xhr.send();
 }
 
