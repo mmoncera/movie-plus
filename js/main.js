@@ -9,6 +9,8 @@ var $formHome = document.querySelector('.form-home');
 var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
 var $movieCardsContainer = document.querySelector('.movie-cards-container');
+var $infoCardContainer = document.querySelector('.info-card-container');
+// console.log($infoCardContainer);
 
 /*
 ************************************************
@@ -30,6 +32,8 @@ function handleLoadDomContent(event) {
   switchDataView(data.view);
   if (data.view === 'search-results') {
     searchMovie();
+  } else if (data.view === 'movie-info') {
+    searchMovieImdbId();
   }
 }
 
@@ -53,6 +57,7 @@ function handleMovieInfoView(event) {
       event.target.matches('.movie-card-info-text'))
   ) {
     switchDataView('movie-info');
+    $infoCardContainer.innerHTML = '';
     var closestMovieId =
       event.target.closest('[data-movie-id]').dataset.movieId;
     data.selectedMovieId = closestMovieId;
@@ -107,29 +112,14 @@ function searchMovie() {
   xhr.send();
 }
 
-function searchMovieImdbId() {
-  var xhr = new XMLHttpRequest();
-  xhr.open(
-    'GET',
-    `https://www.omdbapi.com/?apikey=f1112d72&i=${data.selectedMovieId}`
-  );
-  xhr.responseType = 'json';
-
-  xhr.addEventListener('load', function (event) {
-    // console.log(xhr.response);
-  });
-
-  xhr.send();
-}
-
 function renderMovieCard(movie) {
   /*
-  <li class="movie-card column-half" data-movie-id=`{movie.imdbID}`>
+  <li class="movie-card column-half" data-movie-id=`${movie.imdbID}`>
     <div class="movie-card-poster-container row">
       <img
         class="movie-card-poster"
-        src=`${movie.Poster}
-        alt=`{movie.Title}`
+        src=`${movie.Poster}`
+        alt=`${movie.Title}`
       />
     </div>
     <div class="movie-card-info-container row">
@@ -171,4 +161,158 @@ function renderMovieCard(movie) {
   $movieCardInfoContainer.append($movieCardInfoIcon, $movieCardInfoText);
 
   return $movieCard;
+}
+
+function searchMovieImdbId() {
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    'GET',
+    `https://www.omdbapi.com/?apikey=f1112d72&i=${data.selectedMovieId}`
+  );
+  xhr.responseType = 'json';
+
+  xhr.addEventListener('load', function (event) {
+    // console.log(xhr.response);
+    var { imdbID, Poster, Title, Year, Plot, Director, Actors } = xhr.response;
+    var movieInfo = {
+      imdbID,
+      Poster,
+      Title,
+      Year,
+      Plot,
+      Director,
+      Actors
+    };
+    $infoCardContainer.appendChild(renderInfoCard(movieInfo));
+  });
+
+  xhr.send();
+}
+
+function renderInfoCard(movie) {
+  /*
+  <div class="info-card" data-movie-id=`${movie.imdbID}>
+    <div class="info-card-poster-container row">
+      <img
+        class="info-card-poster column-full"
+        src=`${movie.Poster}`
+        alt=`${movie.Title}`
+      />
+    </div>
+    <div class="info-card-details-container row">
+      <p class="info-card-details-title-year column-full">`${movie.Title} ($${movie.Year})`</p>
+      <p class="info-card-details-plot column-full">`${movie.Plot}`</p>
+      <div class="info-card-details-director-container column-full">
+        <span class="info-card-details-director-title">DIRECTOR</span>
+        <span class="info-card-details-director-names">`${movie.Director}`</span>
+      </div>
+      <div class="info-card-details-cast-container column-full">
+        <span class="info-card-details-cast-title">CAST</span>
+        <span class="info-card-details-cast-names">`${movie.Actors}`</span>
+      </div>
+    </div>
+    <div class="info-card-nav-container row">
+      <i class="fa-solid fa-chevron-left info-card-nav-back"></i>
+      <i class="fa-solid fa-plus info-card-nav-add"></i>
+    </div>
+  </div>
+  */
+
+  var $infoCard = document.createElement('div');
+  var $infoCardPosterContainer = document.createElement('div');
+  var $infoCardPoster = document.createElement('img');
+  var $infoCardDetailsContainer = document.createElement('div');
+  var $infoCardDetailsTitleYear = document.createElement('p');
+  var $infoCardDetailsPlot = document.createElement('p');
+  var $infoCardDetailsDirectorContainer = document.createElement('div');
+  var $infoCardDetailsDirectorTitle = document.createElement('span');
+  var $infoCardDetailsDirectorNames = document.createElement('span');
+  var $infoCardDetailsCastContainer = document.createElement('div');
+  var $infoCardDetailsCastTitle = document.createElement('span');
+  var $infoCardDetailsCastNames = document.createElement('span');
+  var $infoCardNavContainer = document.createElement('nav');
+  var $infoCardNavBack = document.createElement('i');
+  var $infoCardNavAdd = document.createElement('i');
+
+  $infoCard.setAttribute('class', 'info-card');
+  $infoCard.setAttribute('data-movie-id', movie.imdbID);
+  $infoCardPosterContainer.setAttribute(
+    'class',
+    'info-card-poster-container row'
+  );
+  $infoCardPoster.setAttribute('class', 'info-card-poster column-full');
+  $infoCardPoster.setAttribute('src', movie.Poster);
+  $infoCardPoster.setAttribute('alt', movie.Title);
+  $infoCardDetailsContainer.setAttribute(
+    'class',
+    'info-card-details-container row'
+  );
+  $infoCardDetailsTitleYear.setAttribute(
+    'class',
+    'info-card-details-title-year column-full'
+  );
+  $infoCardDetailsTitleYear.textContent = `${movie.Title} (${movie.Year})`;
+  $infoCardDetailsPlot.setAttribute(
+    'class',
+    'info-card-details-plot column-full'
+  );
+  $infoCardDetailsPlot.textContent = movie.Plot;
+  $infoCardDetailsDirectorContainer.setAttribute(
+    'class',
+    'info-card-details-director-container column-full'
+  );
+  $infoCardDetailsDirectorTitle.setAttribute(
+    'class',
+    'info-card-details-director-title'
+  );
+  $infoCardDetailsDirectorTitle.textContent = 'DIRECTOR';
+  $infoCardDetailsDirectorNames.setAttribute(
+    'class',
+    'info-card-details-director-names'
+  );
+  $infoCardDetailsDirectorNames.textContent = movie.Director;
+  $infoCardDetailsCastContainer.setAttribute(
+    'class',
+    'info-card-details-cast-container column-full'
+  );
+  $infoCardDetailsCastTitle.setAttribute(
+    'class',
+    'info-card-details-cast-title'
+  );
+  $infoCardDetailsCastTitle.textContent = 'CAST';
+  $infoCardDetailsCastNames.setAttribute(
+    'class',
+    'info-card-details-cast-names'
+  );
+  $infoCardDetailsCastNames.textContent = movie.Actors;
+  $infoCardNavContainer.setAttribute('class', 'info-card-nav-container row');
+  $infoCardNavBack.setAttribute(
+    'class',
+    'fa-solid fa-chevron-left info-card-nav-back'
+  );
+  $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
+
+  $infoCard.append(
+    $infoCardPosterContainer,
+    $infoCardDetailsContainer,
+    $infoCardNavContainer
+  );
+  $infoCardPosterContainer.appendChild($infoCardPoster);
+  $infoCardDetailsContainer.append(
+    $infoCardDetailsTitleYear,
+    $infoCardDetailsPlot,
+    $infoCardDetailsDirectorContainer,
+    $infoCardDetailsCastContainer
+  );
+  $infoCardDetailsDirectorContainer.append(
+    $infoCardDetailsDirectorTitle,
+    $infoCardDetailsDirectorNames
+  );
+  $infoCardDetailsCastContainer.append(
+    $infoCardDetailsCastTitle,
+    $infoCardDetailsCastNames
+  );
+  $infoCardNavContainer.append($infoCardNavBack, $infoCardNavAdd);
+
+  return $infoCard;
 }
