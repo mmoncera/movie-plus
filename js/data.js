@@ -4,6 +4,7 @@ var data = {
   view: 'home',
   searchInput: null,
   selectedMovieId: null,
+  selectedInfoCard: null,
   searchResults: [],
   watchlist: []
 };

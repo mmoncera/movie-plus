@@ -10,7 +10,6 @@ var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
 var $movieCardsContainer = document.querySelector('.movie-cards-container');
 var $infoCardContainer = document.querySelector('.info-card-container');
-// console.log($infoCardContainer);
 
 /*
 ************************************************
@@ -22,6 +21,7 @@ $appHome.addEventListener('click', handleHomeView);
 $formHome.addEventListener('submit', handleSubmit);
 $formSearchResults.addEventListener('submit', handleSubmit);
 $movieCardsContainer.addEventListener('click', handleMovieInfoView);
+$infoCardContainer.addEventListener('click', handleAddWatchlist);
 
 /*
 ************************************************
@@ -62,6 +62,18 @@ function handleMovieInfoView(event) {
       event.target.closest('[data-movie-id]').dataset.movieId;
     data.selectedMovieId = closestMovieId;
     searchMovieImdbId();
+  }
+}
+
+function handleAddWatchlist(event) {
+  if (event.target && event.target.matches('.info-card-nav-add')) {
+    if (getWatchlistIndex() === -1) {
+      event.target.classList.replace('fa-plus', 'fa-check');
+      data.watchlist.unshift(data.selectedInfoCard);
+    } else {
+      event.target.classList.replace('fa-check', 'fa-plus');
+      data.watchlist.splice(getWatchlistIndex(), 1);
+    }
   }
 }
 
@@ -172,7 +184,6 @@ function searchMovieImdbId() {
   xhr.responseType = 'json';
 
   xhr.addEventListener('load', function (event) {
-    // console.log(xhr.response);
     var { imdbID, Poster, Title, Year, Plot, Director, Actors } = xhr.response;
     var movieInfo = {
       imdbID,
@@ -183,6 +194,8 @@ function searchMovieImdbId() {
       Director,
       Actors
     };
+
+    data.selectedInfoCard = movieInfo;
     $infoCardContainer.appendChild(renderInfoCard(movieInfo));
   });
 
@@ -290,7 +303,15 @@ function renderInfoCard(movie) {
     'class',
     'fa-solid fa-chevron-left info-card-nav-back'
   );
-  $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
+
+  if (getWatchlistIndex() === -1) {
+    $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
+  } else {
+    $infoCardNavAdd.setAttribute(
+      'class',
+      'fa-solid fa-check info-card-nav-add'
+    );
+  }
 
   $infoCard.append(
     $infoCardPosterContainer,
@@ -315,4 +336,11 @@ function renderInfoCard(movie) {
   $infoCardNavContainer.append($infoCardNavBack, $infoCardNavAdd);
 
   return $infoCard;
+}
+
+function getWatchlistIndex() {
+  var watchlistIndex = data.watchlist.findIndex(
+    ({ imdbID }) => imdbID === data.selectedMovieId
+  );
+  return watchlistIndex;
 }
