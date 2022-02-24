@@ -1,9 +1,11 @@
 /* exported data */
 
 var data = {
-  view: 'home',
+  currentView: 'home',
+  previousView: null,
   searchInput: null,
-  currentMovieID: null,
+  selectedMovieId: null,
+  selectedInfoCard: null,
   searchResults: [],
   watchlist: []
 };
@@ -20,3 +22,5 @@ function handleBeforeUnload(event) {
 }
 
 window.addEventListener('beforeunload', handleBeforeUnload);
+
+// localStorage.clear();
