@@ -1,7 +1,8 @@
 /* exported data */
 
 var data = {
-  view: 'home',
+  currentView: 'home',
+  previousView: null,
   searchInput: null,
   selectedMovieId: null,
   selectedInfoCard: null,

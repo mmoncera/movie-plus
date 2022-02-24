@@ -22,6 +22,7 @@ $formHome.addEventListener('submit', handleSubmit);
 $formSearchResults.addEventListener('submit', handleSubmit);
 $movieCardsContainer.addEventListener('click', handleMovieInfoView);
 $infoCardContainer.addEventListener('click', handleAddWatchlist);
+$infoCardContainer.addEventListener('click', handleBackButton);
 
 /*
 ************************************************
@@ -29,10 +30,10 @@ Event Handlers
 ************************************************
 */
 function handleLoadDomContent(event) {
-  switchDataView(data.view);
-  if (data.view === 'search-results') {
+  switchDataView(data.currentView);
+  if (data.currentView === 'search-results') {
     searchMovie();
-  } else if (data.view === 'movie-info') {
+  } else if (data.currentView === 'movie-info') {
     searchMovieImdbId();
   }
 }
@@ -44,7 +45,6 @@ function handleHomeView(event) {
 function handleSubmit() {
   event.preventDefault();
   data.searchInput = this.search.value;
-  $movieCardsContainer.innerHTML = '';
   searchMovie();
   this.reset();
   switchDataView('search-results');
@@ -56,8 +56,8 @@ function handleMovieInfoView(event) {
     (event.target.matches('.movie-card-info-icon') ||
       event.target.matches('.movie-card-info-text'))
   ) {
+    data.previousView = data.currentView;
     switchDataView('movie-info');
-    $infoCardContainer.innerHTML = '';
     var closestMovieId =
       event.target.closest('[data-movie-id]').dataset.movieId;
     data.selectedMovieId = closestMovieId;
@@ -88,20 +88,20 @@ function switchDataView(view) {
       element.classList.add('hidden');
     } else {
       element.classList.remove('hidden');
-      data.view = view;
+      data.currentView = view;
     }
   });
 }
 
 function searchMovie() {
+  data.searchResults = [];
+  $movieCardsContainer.innerHTML = '';
   var xhr = new XMLHttpRequest();
   xhr.open(
     'GET',
     `https://www.omdbapi.com/?apikey=f1112d72&type=movie&s=${data.searchInput}`
   );
   xhr.responseType = 'json';
-
-  data.searchResults = [];
   xhr.addEventListener('load', function (event) {
     if (xhr.status >= 400 || xhr.response.Response === 'False') {
       $searchMessage.textContent = `No results found for "${data.searchInput}"`;
@@ -176,13 +176,13 @@ function renderMovieCard(movie) {
 }
 
 function searchMovieImdbId() {
+  $infoCardContainer.innerHTML = '';
   var xhr = new XMLHttpRequest();
   xhr.open(
     'GET',
     `https://www.omdbapi.com/?apikey=f1112d72&i=${data.selectedMovieId}`
   );
   xhr.responseType = 'json';
-
   xhr.addEventListener('load', function (event) {
     var { imdbID, Poster, Title, Year, Plot, Director, Actors } = xhr.response;
     var movieInfo = {
@@ -194,11 +194,9 @@ function searchMovieImdbId() {
       Director,
       Actors
     };
-
     data.selectedInfoCard = movieInfo;
     $infoCardContainer.appendChild(renderInfoCard(movieInfo));
   });
-
   xhr.send();
 }
 
@@ -343,4 +341,11 @@ function getWatchlistIndex() {
     ({ imdbID }) => imdbID === data.selectedMovieId
   );
   return watchlistIndex;
+}
+
+function handleBackButton(event) {
+  if (event.target && event.target.matches('.info-card-nav-back')) {
+    switchDataView(data.previousView);
+    searchMovie(data.searchInput);
+  }
 }
