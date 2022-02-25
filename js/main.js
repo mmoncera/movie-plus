@@ -77,6 +77,13 @@ function handleAddWatchlist(event) {
   }
 }
 
+function handleBackButton(event) {
+  if (event.target && event.target.matches('.info-card-nav-back')) {
+    switchDataView(data.previousView);
+    searchMovie(data.searchInput);
+  }
+}
+
 /*
 ************************************************
 Utility Functions
@@ -140,7 +147,6 @@ function renderMovieCard(movie) {
     </div>
   </li>
   */
-
   var $movieCard = document.createElement('li');
   var $movieCardPosterContainer = document.createElement('div');
   var $movieCardPoster = document.createElement('img');
@@ -228,7 +234,6 @@ function renderInfoCard(movie) {
     </div>
   </div>
   */
-
   var $infoCard = document.createElement('div');
   var $infoCardPosterContainer = document.createElement('div');
   var $infoCardPoster = document.createElement('img');
@@ -301,7 +306,6 @@ function renderInfoCard(movie) {
     'class',
     'fa-solid fa-chevron-left info-card-nav-back'
   );
-
   if (getWatchlistIndex() === -1) {
     $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
   } else {
@@ -341,11 +345,4 @@ function getWatchlistIndex() {
     ({ imdbID }) => imdbID === data.selectedMovieId
   );
   return watchlistIndex;
-}
-
-function handleBackButton(event) {
-  if (event.target && event.target.matches('.info-card-nav-back')) {
-    switchDataView(data.previousView);
-    searchMovie(data.searchInput);
-  }
 }
