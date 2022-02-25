@@ -346,3 +346,10 @@ function getWatchlistIndex() {
   );
   return watchlistIndex;
 }
+
+var $watchlist = document.querySelector('.watchlist');
+// console.log($watchlist);
+$watchlist.addEventListener('click', handleWatchlistView);
+function handleWatchlistView(event) {
+  switchDataView('watchlist');
+}
