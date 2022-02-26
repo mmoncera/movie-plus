@@ -62,7 +62,7 @@ main {
 }
 
 .search-container:focus-within {
-  outline: 0.3rem solid #a9a9a9;
+  outline: 0.2rem solid #a9a9a9;
 }
 
 .search-input,
@@ -146,7 +146,7 @@ main {
 }
 
 .info-card-poster {
-  height: 32rem;
+  height: 28rem;
   object-fit: cover;
 }
 
@@ -175,11 +175,21 @@ main {
 }
 
 .info-card-nav-container > * {
-  background-color: rgb(19, 160, 19);
+  background-color: #13a013;
   margin: 0.5rem;
   padding: 0.2rem 0.5rem;
   font-size: 2rem;
   color: #2c2828;
   border-radius: 0.75rem;
   cursor: pointer;
+}
+
+/* Watchlist View */
+.watchlist-message {
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.watchlist-container {
+  padding: 0;
 }

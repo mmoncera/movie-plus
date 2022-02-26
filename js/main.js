@@ -10,6 +10,8 @@ var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
 var $movieCardsContainer = document.querySelector('.movie-cards-container');
 var $infoCardContainer = document.querySelector('.info-card-container');
+var $watchlist = document.querySelector('.watchlist');
+var $watchlistContainer = document.querySelector('.watchlist-container');
 
 /*
 ************************************************
@@ -23,6 +25,7 @@ $formSearchResults.addEventListener('submit', handleSubmit);
 $movieCardsContainer.addEventListener('click', handleMovieInfoView);
 $infoCardContainer.addEventListener('click', handleAddWatchlist);
 $infoCardContainer.addEventListener('click', handleBackButton);
+$watchlist.addEventListener('click', handleWatchlistView);
 
 /*
 ************************************************
@@ -35,6 +38,8 @@ function handleLoadDomContent(event) {
     searchMovie();
   } else if (data.currentView === 'movie-info') {
     searchMovieImdbId();
+  } else if (data.currentView === 'watchlist') {
+    searchWatchlist();
   }
 }
 
@@ -82,6 +87,11 @@ function handleBackButton(event) {
     switchDataView(data.previousView);
     searchMovie(data.searchInput);
   }
+}
+
+function handleWatchlistView(event) {
+  switchDataView('watchlist');
+  searchWatchlist();
 }
 
 /*
@@ -347,9 +357,15 @@ function getWatchlistIndex() {
   return watchlistIndex;
 }
 
-var $watchlist = document.querySelector('.watchlist');
-// console.log($watchlist);
-$watchlist.addEventListener('click', handleWatchlistView);
-function handleWatchlistView(event) {
-  switchDataView('watchlist');
+function searchWatchlist() {
+  var $watchlistMessage = document.querySelector('.watchlist-message');
+  if (data.watchlist.length === 0) {
+    $watchlistMessage.textContent = 'WATCHLIST EMPTY';
+  } else {
+    $watchlistMessage.textContent = 'MY WATCHLIST';
+  }
+  $watchlistContainer.innerHTML = '';
+  data.watchlist.forEach(element => {
+    $watchlistContainer.append(renderMovieCard(element));
+  });
 }
