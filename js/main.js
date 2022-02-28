@@ -10,6 +10,8 @@ var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
 var $movieCardsContainer = document.querySelector('.movie-cards-container');
 var $infoCardContainer = document.querySelector('.info-card-container');
+var $watchlist = document.querySelector('.watchlist');
+var $watchlistContainer = document.querySelector('.watchlist-container');
 
 /*
 ************************************************
@@ -23,6 +25,7 @@ $formSearchResults.addEventListener('submit', handleSubmit);
 $movieCardsContainer.addEventListener('click', handleMovieInfoView);
 $infoCardContainer.addEventListener('click', handleAddWatchlist);
 $infoCardContainer.addEventListener('click', handleBackButton);
+$watchlist.addEventListener('click', handleWatchlistView);
 
 /*
 ************************************************
@@ -35,6 +38,8 @@ function handleLoadDomContent(event) {
     searchMovie();
   } else if (data.currentView === 'movie-info') {
     searchMovieImdbId();
+  } else if (data.currentView === 'watchlist') {
+    searchWatchlist();
   }
 }
 
@@ -75,6 +80,18 @@ function handleAddWatchlist(event) {
       data.watchlist.splice(getWatchlistIndex(), 1);
     }
   }
+}
+
+function handleBackButton(event) {
+  if (event.target && event.target.matches('.info-card-nav-back')) {
+    switchDataView(data.previousView);
+    searchMovie(data.searchInput);
+  }
+}
+
+function handleWatchlistView(event) {
+  switchDataView('watchlist');
+  searchWatchlist();
 }
 
 /*
@@ -140,7 +157,6 @@ function renderMovieCard(movie) {
     </div>
   </li>
   */
-
   var $movieCard = document.createElement('li');
   var $movieCardPosterContainer = document.createElement('div');
   var $movieCardPoster = document.createElement('img');
@@ -228,7 +244,6 @@ function renderInfoCard(movie) {
     </div>
   </div>
   */
-
   var $infoCard = document.createElement('div');
   var $infoCardPosterContainer = document.createElement('div');
   var $infoCardPoster = document.createElement('img');
@@ -301,7 +316,6 @@ function renderInfoCard(movie) {
     'class',
     'fa-solid fa-chevron-left info-card-nav-back'
   );
-
   if (getWatchlistIndex() === -1) {
     $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
   } else {
@@ -343,9 +357,15 @@ function getWatchlistIndex() {
   return watchlistIndex;
 }
 
-function handleBackButton(event) {
-  if (event.target && event.target.matches('.info-card-nav-back')) {
-    switchDataView(data.previousView);
-    searchMovie(data.searchInput);
+function searchWatchlist() {
+  var $watchlistMessage = document.querySelector('.watchlist-message');
+  if (data.watchlist.length === 0) {
+    $watchlistMessage.textContent = 'WATCHLIST EMPTY';
+  } else {
+    $watchlistMessage.textContent = 'MY WATCHLIST';
   }
+  $watchlistContainer.innerHTML = '';
+  data.watchlist.forEach(element => {
+    $watchlistContainer.append(renderMovieCard(element));
+  });
 }

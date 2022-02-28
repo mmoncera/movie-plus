@@ -16,11 +16,11 @@ if (previousDataJSON !== null) {
   data = JSON.parse(previousDataJSON);
 }
 
+window.addEventListener('beforeunload', handleBeforeUnload);
+
 function handleBeforeUnload(event) {
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('javascript-local-storage', dataJSON);
 }
-
-window.addEventListener('beforeunload', handleBeforeUnload);
 
 // localStorage.clear();
