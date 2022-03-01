@@ -22,5 +22,3 @@ function handleBeforeUnload(event) {
   var dataJSON = JSON.stringify(data);
   localStorage.setItem('javascript-local-storage', dataJSON);
 }
-
-// localStorage.clear();
