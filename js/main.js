@@ -97,7 +97,11 @@ function handleAddRemoveWatchlist(event) {
 function handleBackButton(event) {
   if (event.target && event.target.matches('.info-card-nav-back')) {
     switchDataView(data.previousView);
-    searchMovie(data.searchInput);
+    if (data.previousView === 'search-results') {
+      appendSearchResultsMovieCards();
+    } else if (data.previousView === 'watchlist') {
+      appendWatchlistMovieCards();
+    }
   }
 }
 
