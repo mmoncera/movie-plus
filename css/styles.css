@@ -47,7 +47,7 @@ button {
 /* Main */
 main {
   position: relative;
-  top: 4.5rem;
+  top: 5.25rem;
 }
 
 /* Home View */
@@ -98,7 +98,7 @@ main {
   text-align: center;
 }
 
-.movie-cards-container {
+.search-results-movie-cards-container {
   padding: 0;
 }
 
@@ -190,6 +190,6 @@ main {
   text-align: center;
 }
 
-.watchlist-container {
+.watchlist-movie-cards-container {
   padding: 0;
 }

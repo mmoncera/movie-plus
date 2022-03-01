@@ -3,15 +3,20 @@
 DOM Nodes
 ************************************************
 */
-var $appHome = document.querySelector('.app-home');
 var $dataView = document.querySelectorAll('[data-view]');
+var $appHome = document.querySelector('.app-home');
 var $formHome = document.querySelector('.form-home');
 var $formSearchResults = document.querySelector('.form-search-results');
 var $searchMessage = document.querySelector('.search-message');
-var $movieCardsContainer = document.querySelector('.movie-cards-container');
+var $searchResultsMovieCardsContainer = document.querySelector(
+  '.search-results-movie-cards-container'
+);
 var $infoCardContainer = document.querySelector('.info-card-container');
 var $watchlist = document.querySelector('.watchlist');
-var $watchlistContainer = document.querySelector('.watchlist-container');
+var $watchlistMessage = document.querySelector('.watchlist-message');
+var $watchlistMovieCardsContainer = document.querySelector(
+  '.watchlist-movie-cards-container'
+);
 
 /*
 ************************************************
@@ -22,10 +27,14 @@ window.addEventListener('DOMContentLoaded', handleLoadDomContent);
 $appHome.addEventListener('click', handleHomeView);
 $formHome.addEventListener('submit', handleSubmit);
 $formSearchResults.addEventListener('submit', handleSubmit);
-$movieCardsContainer.addEventListener('click', handleMovieInfoView);
-$infoCardContainer.addEventListener('click', handleAddWatchlist);
+$searchResultsMovieCardsContainer.addEventListener(
+  'click',
+  handleMovieInfoView
+);
+$infoCardContainer.addEventListener('click', handleAddRemoveWatchlist);
 $infoCardContainer.addEventListener('click', handleBackButton);
 $watchlist.addEventListener('click', handleWatchlistView);
+$watchlistMovieCardsContainer.addEventListener('click', handleMovieInfoView);
 
 /*
 ************************************************
@@ -35,11 +44,11 @@ Event Handlers
 function handleLoadDomContent(event) {
   switchDataView(data.currentView);
   if (data.currentView === 'search-results') {
-    searchMovie();
+    appendSearchResultsMovieCards();
   } else if (data.currentView === 'movie-info') {
-    searchMovieImdbId();
+    appendInfoCard();
   } else if (data.currentView === 'watchlist') {
-    searchWatchlist();
+    appendWatchlistMovieCards();
   }
 }
 
@@ -50,9 +59,11 @@ function handleHomeView(event) {
 function handleSubmit() {
   event.preventDefault();
   data.searchInput = this.search.value;
+  data.searchResults = [];
+  switchDataView('search-results');
+  $searchResultsMovieCardsContainer.innerHTML = '';
   searchMovie();
   this.reset();
-  switchDataView('search-results');
 }
 
 function handleMovieInfoView(event) {
@@ -61,18 +72,19 @@ function handleMovieInfoView(event) {
     (event.target.matches('.movie-card-info-icon') ||
       event.target.matches('.movie-card-info-text'))
   ) {
-    data.previousView = data.currentView;
-    switchDataView('movie-info');
     var closestMovieId =
       event.target.closest('[data-movie-id]').dataset.movieId;
     data.selectedMovieId = closestMovieId;
+    data.previousView = data.currentView;
+    switchDataView('movie-info');
+    $infoCardContainer.innerHTML = '';
     searchMovieImdbId();
   }
 }
 
-function handleAddWatchlist(event) {
-  if (event.target && event.target.matches('.info-card-nav-add')) {
-    if (getWatchlistIndex() === -1) {
+function handleAddRemoveWatchlist(event) {
+  if (event.target && event.target.matches('.info-card-nav-add-remove')) {
+    if (getWatchlistIndex() < 0) {
       event.target.classList.replace('fa-plus', 'fa-check');
       data.watchlist.unshift(data.selectedInfoCard);
     } else {
@@ -91,7 +103,7 @@ function handleBackButton(event) {
 
 function handleWatchlistView(event) {
   switchDataView('watchlist');
-  searchWatchlist();
+  appendWatchlistMovieCards();
 }
 
 /*
@@ -111,8 +123,6 @@ function switchDataView(view) {
 }
 
 function searchMovie() {
-  data.searchResults = [];
-  $movieCardsContainer.innerHTML = '';
   var xhr = new XMLHttpRequest();
   xhr.open(
     'GET',
@@ -124,8 +134,8 @@ function searchMovie() {
       $searchMessage.textContent = `No results found for "${data.searchInput}"`;
       return;
     }
+    $searchMessage.textContent = `Search results for "${data.searchInput}"`;
     xhr.response.Search.forEach(({ imdbID, Poster, Title, Year }) => {
-      $searchMessage.textContent = `Search results for "${data.searchInput}"`;
       if (Poster !== 'N/A') {
         var movie = {
           imdbID,
@@ -133,9 +143,9 @@ function searchMovie() {
           Title,
           Year
         };
-        data.searchResults.push(movie);
-        $movieCardsContainer.append(renderMovieCard(movie));
       }
+      data.searchResults.push(movie);
+      $searchResultsMovieCardsContainer.append(renderMovieCard(movie));
     });
   });
   xhr.send();
@@ -192,7 +202,6 @@ function renderMovieCard(movie) {
 }
 
 function searchMovieImdbId() {
-  $infoCardContainer.innerHTML = '';
   var xhr = new XMLHttpRequest();
   xhr.open(
     'GET',
@@ -211,7 +220,7 @@ function searchMovieImdbId() {
       Actors
     };
     data.selectedInfoCard = movieInfo;
-    $infoCardContainer.appendChild(renderInfoCard(movieInfo));
+    $infoCardContainer.append(renderInfoCard(movieInfo));
   });
   xhr.send();
 }
@@ -240,7 +249,7 @@ function renderInfoCard(movie) {
     </div>
     <div class="info-card-nav-container row">
       <i class="fa-solid fa-chevron-left info-card-nav-back"></i>
-      <i class="fa-solid fa-plus info-card-nav-add"></i>
+      <i class="fa-solid fa-plus info-card-nav-add-remove"></i>
     </div>
   </div>
   */
@@ -258,7 +267,7 @@ function renderInfoCard(movie) {
   var $infoCardDetailsCastNames = document.createElement('span');
   var $infoCardNavContainer = document.createElement('nav');
   var $infoCardNavBack = document.createElement('i');
-  var $infoCardNavAdd = document.createElement('i');
+  var $infoCardNavAddRemove = document.createElement('i');
 
   $infoCard.setAttribute('class', 'info-card');
   $infoCard.setAttribute('data-movie-id', movie.imdbID);
@@ -317,11 +326,14 @@ function renderInfoCard(movie) {
     'fa-solid fa-chevron-left info-card-nav-back'
   );
   if (getWatchlistIndex() === -1) {
-    $infoCardNavAdd.setAttribute('class', 'fa-solid fa-plus info-card-nav-add');
-  } else {
-    $infoCardNavAdd.setAttribute(
+    $infoCardNavAddRemove.setAttribute(
       'class',
-      'fa-solid fa-check info-card-nav-add'
+      'fa-solid fa-plus info-card-nav-add-remove'
+    );
+  } else {
+    $infoCardNavAddRemove.setAttribute(
+      'class',
+      'fa-solid fa-check info-card-nav-add-remove'
     );
   }
 
@@ -345,7 +357,7 @@ function renderInfoCard(movie) {
     $infoCardDetailsCastTitle,
     $infoCardDetailsCastNames
   );
-  $infoCardNavContainer.append($infoCardNavBack, $infoCardNavAdd);
+  $infoCardNavContainer.append($infoCardNavBack, $infoCardNavAddRemove);
 
   return $infoCard;
 }
@@ -357,15 +369,31 @@ function getWatchlistIndex() {
   return watchlistIndex;
 }
 
-function searchWatchlist() {
-  var $watchlistMessage = document.querySelector('.watchlist-message');
+function appendSearchResultsMovieCards() {
+  if (data.searchResults.length === 0) {
+    $searchMessage.textContent = `No results found for "${data.searchInput}"`;
+  } else {
+    $searchMessage.textContent = `Search results for "${data.searchInput}"`;
+  }
+  $searchResultsMovieCardsContainer.innerHTML = '';
+  data.searchResults.forEach(element => {
+    $searchResultsMovieCardsContainer.append(renderMovieCard(element));
+  });
+}
+
+function appendInfoCard() {
+  $infoCardContainer.innerHTML = '';
+  $infoCardContainer.appendChild(renderInfoCard(data.selectedInfoCard));
+}
+
+function appendWatchlistMovieCards() {
   if (data.watchlist.length === 0) {
     $watchlistMessage.textContent = 'WATCHLIST EMPTY';
   } else {
     $watchlistMessage.textContent = 'MY WATCHLIST';
   }
-  $watchlistContainer.innerHTML = '';
+  $watchlistMovieCardsContainer.innerHTML = '';
   data.watchlist.forEach(element => {
-    $watchlistContainer.append(renderMovieCard(element));
+    $watchlistMovieCardsContainer.append(renderMovieCard(element));
   });
 }
