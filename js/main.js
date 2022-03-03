@@ -147,9 +147,9 @@ function searchMovie() {
           Title,
           Year
         };
+        data.searchResults.push(movie);
+        $searchResultsMovieCardsContainer.append(renderMovieCard(movie));
       }
-      data.searchResults.push(movie);
-      $searchResultsMovieCardsContainer.append(renderMovieCard(movie));
     });
   });
   xhr.send();
