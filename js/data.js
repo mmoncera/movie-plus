@@ -10,7 +10,7 @@ var data = {
   watchlist: []
 };
 
-var previousDataJSON = localStorage.getItem('javascript-local-storage');
+var previousDataJSON = localStorage.getItem('ajax-project-local-storage');
 
 if (previousDataJSON !== null) {
   data = JSON.parse(previousDataJSON);
@@ -20,5 +20,5 @@ window.addEventListener('beforeunload', handleBeforeUnload);
 
 function handleBeforeUnload(event) {
   var dataJSON = JSON.stringify(data);
-  localStorage.setItem('javascript-local-storage', dataJSON);
+  localStorage.setItem('ajax-project-local-storage', dataJSON);
 }
