@@ -1,8 +1,3 @@
-/*
-************************************************
-DOM Nodes
-************************************************
-*/
 var $dataView = document.querySelectorAll('[data-view]');
 var $appHome = document.querySelector('.app-home');
 var $formHome = document.querySelector('.form-home');
@@ -18,11 +13,6 @@ var $watchlistMovieCardsContainer = document.querySelector(
   '.watchlist-movie-cards-container'
 );
 
-/*
-************************************************
-Event Listners
-************************************************
-*/
 window.addEventListener('DOMContentLoaded', handleLoadDomContent);
 $appHome.addEventListener('click', handleHomeView);
 $formHome.addEventListener('submit', handleSubmit);
@@ -36,11 +26,6 @@ $infoCardContainer.addEventListener('click', handleBackButton);
 $watchlist.addEventListener('click', handleWatchlistView);
 $watchlistMovieCardsContainer.addEventListener('click', handleMovieInfoView);
 
-/*
-************************************************
-Event Handlers
-************************************************
-*/
 function handleLoadDomContent(event) {
   switchDataView(data.currentView);
   if (data.currentView === 'search-results') {
@@ -110,11 +95,6 @@ function handleWatchlistView(event) {
   appendWatchlistMovieCards();
 }
 
-/*
-************************************************
-Utility Functions
-************************************************
-*/
 function switchDataView(view) {
   $dataView.forEach(element => {
     if (element.dataset.view !== view) {
@@ -156,21 +136,6 @@ function searchMovie() {
 }
 
 function renderMovieCard(movie) {
-  /*
-  <li class="movie-card column-half" data-movie-id=`${movie.imdbID}`>
-    <div class="movie-card-poster-container row">
-      <img
-        class="movie-card-poster"
-        src=`${movie.Poster}`
-        alt=`${movie.Title}`
-      />
-    </div>
-    <div class="movie-card-info-container row">
-        <i class="fa-solid fa-circle-info movie-card-info-icon"></i>
-        <span class="movie-card-info-text">Details</span>
-    </div>
-  </li>
-  */
   var $movieCard = document.createElement('li');
   var $movieCardPosterContainer = document.createElement('div');
   var $movieCardPoster = document.createElement('img');
@@ -230,33 +195,6 @@ function searchMovieImdbId() {
 }
 
 function renderInfoCard(movie) {
-  /*
-  <div class="info-card" data-movie-id=`${movie.imdbID}>
-    <div class="info-card-poster-container row">
-      <img
-        class="info-card-poster column-full"
-        src=`${movie.Poster}`
-        alt=`${movie.Title}`
-      />
-    </div>
-    <div class="info-card-details-container row">
-      <p class="info-card-details-title-year column-full">`${movie.Title} ($${movie.Year})`</p>
-      <p class="info-card-details-plot column-full">`${movie.Plot}`</p>
-      <div class="info-card-details-director-container column-full">
-        <span class="info-card-details-director-title">DIRECTOR</span>
-        <span class="info-card-details-director-names">`${movie.Director}`</span>
-      </div>
-      <div class="info-card-details-cast-container column-full">
-        <span class="info-card-details-cast-title">CAST</span>
-        <span class="info-card-details-cast-names">`${movie.Actors}`</span>
-      </div>
-    </div>
-    <div class="info-card-nav-container row">
-      <i class="fa-solid fa-chevron-left info-card-nav-back"></i>
-      <i class="fa-solid fa-plus info-card-nav-add-remove"></i>
-    </div>
-  </div>
-  */
   var $infoCard = document.createElement('div');
   var $infoCardPosterContainer = document.createElement('div');
   var $infoCardPoster = document.createElement('img');
