@@ -10,7 +10,6 @@ body {
   color: #fff;
 }
 
-/* Header */
 header {
   background: linear-gradient(#02071f 60%, rgba(37, 20, 54, 0) 100%);
   position: fixed;
@@ -27,13 +26,14 @@ button {
 .nav-container {
   justify-content: space-between;
   align-items: center;
-  margin-inline: 10%;
+  margin-inline: 5%;
   white-space: nowrap;
 }
 
 .app-home {
   font-family: Acme, sans-serif;
-  font-size: 2.75rem;
+  font-size: 2.25rem;
+  margin-right: 1.5rem;
 }
 
 .watchlist-icon {
@@ -44,13 +44,11 @@ button {
   font-size: 1.45rem;
 }
 
-/* Main */
 main {
   position: relative;
   top: 5.25rem;
 }
 
-/* Home View */
 .form-home {
   margin: 35vh auto;
 }
@@ -92,7 +90,6 @@ main {
   border-bottom-right-radius: 1rem;
 }
 
-/* Search Results View */
 .search-message {
   font-size: 1.7rem;
   text-align: center;
@@ -133,7 +130,6 @@ main {
   cursor: pointer;
 }
 
-/* Movie Info View */
 .info-card {
   width: 75%;
   margin: 0.75rem auto;
@@ -184,7 +180,6 @@ main {
   cursor: pointer;
 }
 
-/* Watchlist View */
 .watchlist-message {
   font-size: 1.7rem;
   text-align: center;
